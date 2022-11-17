@@ -8,4 +8,4 @@ optional, generate f2py header files:
 > python3 -m numpy.f2py -h smexp.pyf -m smallexpimv F_smallexpimv.F90
 
 run example:
-> python3 example
+> python3 example.py
