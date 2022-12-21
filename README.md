@@ -9,3 +9,8 @@ optional, generate f2py header files:
 
 run example:
 > python3 example.py
+
+for fortran example
+> gfortran -c F_smallexpimv.F90 example.f90
+> gfortran F_smallexpimv.o example.o -o out -llapack -lblas
+> run -np 3 ./out

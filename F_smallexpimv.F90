@@ -6,7 +6,6 @@ private
 public expimv, expimv_tridiag_precompute, expimv_tridiag_apply
 contains
 
-
 subroutine expimv( dt, H, ldh, m, Y, pmone, kmax, tol, nrmest, maxrestart, dtdone, info )
     ! compute exp(sig * dt * h) * Y(1:muse) -> Y(1:muse)
     ! Y is of size 'muse x (kmax + 1)'
@@ -154,8 +153,6 @@ subroutine expimv_tridiag_precompute(td, tsd, w, z, n, ldz, isuppz, work, iwork,
         info = 1
     endif
 
-    
-
 end subroutine
 
 subroutine expimv_tridiag_apply(dt, pmone, beta, w, z, x, n, ldz, cwork)
@@ -164,7 +161,7 @@ subroutine expimv_tridiag_apply(dt, pmone, beta, w, z, x, n, ldz, cwork)
     ! J = Z * diag(w) * Z.t
     ! w is vector of eigenvalues
     ! x .. output x = beta*exp(pm*i*dt*J)*e1
-    ! cwork .. work vector, actually size n, but we may re-use work vector from expimv_tridiag_precompute with size 20*ldz
+    ! cwork .. work vector
     ! pm = 1 or -1
     implicit none
 
