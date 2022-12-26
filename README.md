@@ -1,4 +1,4 @@
-# python_smallexpimv
+# smallexpimv
 A Python class to apply the imaginary exponential of a matrix (real tridiagonal or complex) using Fortran code; these functions apply well to solve the small matrix exponential which occurs for Lanczos or Arnoldi propagator of Schrödinger-type problems 
 
 generate smallexpimv.so using f2py which can be imported as a module in python3:
@@ -17,4 +17,4 @@ to run python and fortran tests and
 > make libs
 
 to generate smallexpimv.so and smallexpimv_pyclass.pyc.
-To run the makefile, first define the compiler commands and the f2py filename!
+To run the makefile, first define the compiler commands and the f2py filename extension!
