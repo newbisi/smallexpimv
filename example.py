@@ -3,39 +3,46 @@ import smallexpimv_pyclasses as expm
 import numpy as np
 import numpy.linalg
 
-mmax=10
+# define a maximal dimension for matrix H,
+# required to setup working memory in case of multiple H with different dimensions
+nmax=40
 
-n=4
-td = -2*np.ones([mmax], dtype=np.double)
-tsd = np.ones([mmax-1],dtype=np.double)
+# setup example matrix
+n=30
 
-beta = 1.0
-dt = 0.01
-
-expT = expm.expimv_tridiag(mmax)
-expT.precompute(td,tsd,n)
-y=expT.eval(dt,beta)
-
-print(len(y))
-
-print(np.abs(y))
-expH = expm.expimv(40,mmax)
-
-H = np.zeros([mmax,mmax])
+H = np.zeros([nmax,nmax])
 for j in range(n): 
   H[j,j]=-2.0
 for j in range(n-1): 
   H[j+1,j]=1.0
   H[j,j+1]=1.0
+# for tridiagonal setup
+td = -2*np.ones([nmax], dtype=np.double)
+tsd = np.ones([nmax-1],dtype=np.double)
 
+# scaling factor and time-step
+beta = 1.0
+dt = 1.0
+
+# setup solver for imaginary exponential for tridiagonal matirx
+expT = expm.expimv_tridiag(nmax)
+# solve
+expT.precompute(td,tsd,n)
+y=expT.eval(dt,beta)
+
+# setup solver for imaginary exponential for general matrix
+ntaylor = 40
+expH = expm.expimv(ntaylor,nmax)
+#solve
 x = np.zeros([n])
-x[0]=beta
-
+x[0] = beta
 y2 = expH.apply(dt,H,x,n)
-print(y-y2)
 
-print(numpy.linalg.norm(y)) 
-print(numpy.linalg.norm(y2)) 
+# compare results
+erry=numpy.linalg.norm(y-y2)
+print(f"comparing both methods, |y-y2| = {erry}")
 
-# python3 -m numpy.f2py -c F_smallexpimv.F90 -m smallexpimv -lblas
-# python3 -m numpy.f2py -h smexp.pyf -m smallexpimv F_smallexpimv.F90
+# imaginary exponential conserves mass, check
+ern1=abs(numpy.linalg.norm(y) - beta)
+ern2=abs(numpy.linalg.norm(y2) - beta)
+print(f"error in norm of solution, ||y|-b| = {ern1} and ||y2|-b|2 = {ern2}")

@@ -28,7 +28,7 @@ subroutine expimv( dt, H, ldh, m, Y, pmone, kmax, tol, nrmest, maxrestart, dtdon
     logical :: stoptaylor
     complex*16 :: ytemp
 
-    external :: zgemv, zcopy, zaxpy, zscal
+    external :: zgemv, zaxpy, zscal
     double precision, external :: dznrm2
     integer, external :: izamax
 
@@ -48,7 +48,6 @@ subroutine expimv( dt, H, ldh, m, Y, pmone, kmax, tol, nrmest, maxrestart, dtdon
     tend = tnow + dt
 
     taylorrun = 0
-
 
     ! scalar case, exponential of matrix with dimension 1
     if (m .eq. 1) then
@@ -84,15 +83,13 @@ precomputemv: do k = 1, kmax
         dt1=(rtol/(2*qnew))**(1./(kuse))
         dt2=(rtol/(2*qold))**(1./(kuse-1))
         dtx = min(min(dt1,dt2),1.0)
-        call zscal(m,dcmplx(dtx**kuse, 0.0), Y(1+kuse*m),1)! for summation
+        call zscal(m,dcmplx(dtx**kuse, 0.0), Y(1+kuse*m),1)! first scaling step for summationtaylor loop
     endif
+
 summationtaylor: do k = 1, kuse-1
         call zaxpy(m, dcmplx(dtx**(kuse-k), 0.0), Y(1+(kuse-k)*m), 1, Y(1+kuse*m), 1)
     end do summationtaylor
     call zaxpy(m, dcmplx(1.0, 0.0), Y(1+kuse*m), 1, Y(1), 1)
-    
-    !normtest1 = dznrm2(m, Y(1),1)
-    !write(*,*) "loop, er",dtx**(kuse-1)*(qold+dtx*qnew), "tol used", rtol, "kuse", kuse, "dtx", dtx,"norm",normtest,normtest1
 
     tnow = tnow + dtguess*dtx
 
@@ -112,9 +109,8 @@ subroutine expimv_tridiag_precompute(td, tsd, w, z, n, ldz, isuppz, work, iwork,
     ! as a result, eigenbasis z and eigenvalues w are also saved in workd
     implicit none
 
-
     integer :: infoeigs
-    integer :: m,  lwork, liwork
+    integer :: m, lwork, liwork
 
     integer, intent(in) :: ldz, n
     double precision, intent(inout), dimension(ldz, ldz) :: Z
@@ -129,7 +125,6 @@ subroutine expimv_tridiag_precompute(td, tsd, w, z, n, ldz, isuppz, work, iwork,
 
     ! not sure if tsd(n) is overwritten/used as workspace ???
 
-
 ! for krylov, ldz = mmax, n = m
 ! Z is matrix of dimension (ldz, n) <-> (m, mmax) for krylov
 
@@ -138,7 +133,6 @@ subroutine expimv_tridiag_precompute(td, tsd, w, z, n, ldz, isuppz, work, iwork,
 
     lwork = 20 * ldz
     liwork = 10 * ldz
-
 
     if (n > 1) then
         call dstevr('V', 'A', n, td, tsd, 0, 0, 0, 0, 0, &
@@ -178,7 +172,7 @@ subroutine expimv_tridiag_apply(dt, pmone, beta, w, z, x, n, ldz, cwork)
     complex*16 sig
 
     external :: zgemv
-    !double precision, external :: dznrm2
+
     sig = dcmplx(0.0d0, pmone*1.0d0)
     if (n.eq.1) then
         ! z(1,1) = 1
@@ -192,8 +186,5 @@ subroutine expimv_tridiag_apply(dt, pmone, beta, w, z, x, n, ldz, cwork)
 
 end subroutine
 
-
-
 end module smallexpimv
-!python3 -m numpy.f2py -c F_smallexpimv.F90 -m smallexpimv -lblas
 

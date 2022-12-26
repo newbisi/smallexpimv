@@ -33,7 +33,7 @@ class expimv:
   def apply(self,dt,H,x,m,nest=1.0):
     self.Y[:m] = x
     (dtdone, info ) = smallexpimv.expimv( dt, H, m, self.Y, self.pmone, self.kmax, self.tol, nest, self.maxrestart)
-    y=np.zeros([m], dtype=np.cdouble)
+    y = np.zeros([m], dtype=np.cdouble)
     y[:] = self.Y[:m]
     return y
 
