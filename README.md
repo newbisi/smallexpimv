@@ -1,19 +1,19 @@
 # smallexpimv
-Fortran routines and a python wrapper to apply the imaginary exponential of a matrix (real tridiagonal or complex). More precisely,
+This repository provides some Fortran routines and python wrappers to apply the imaginary exponential of a matrix (real tridiagonal or complex) to a vector. More precisely,
 
 $$
 \beta\mathrm{e}^{\pm\mathrm{i} t X} u \in\mathbb{C}^n,
 $$
 
-for a matrix $X\in\mathbb{C}^{n\times n}$, a time-step $t\in\mathbb{R}$, a scaling factor $\beta\in\mathbb{R}$, a vector $u\in\mathbb{C}^n$ and the imaginary number $\mathrm{i}^2 = -1 $. This matrix exponential is approximated by an adaptive and restarted Taylor approximation. We also consider a tridiagonal case, namely
+for a matrix $X\in\mathbb{C}^{n\times n}$, a time-step $t\in\mathbb{R}$, a scaling factor $\beta\in\mathbb{R}$, a vector $u\in\mathbb{C}^n$ and the imaginary number $\mathrm{i}^2 = -1 $. Our first routine computes this vector by an adaptive and restarted Taylor approximation. We also provide a second routine for a tridiagonal case, namely
 
 $$
 \beta\mathrm{e}^{\pm\mathrm{i} t T} e_1 \in\mathbb{C}^n,
 $$
 
-for a tridiagonal symmetric matrix $T\in\mathbb{R}^{n\times n}$ and the first unit vector $e_1 = (1,0,\ldots,0)^\ast \in\mathbb{R}^{n}$.  For the tridiagonal case we use a lapack eigendecomposition.
+where $T\in\mathbb{R}^{n\times n}$ refers to a tridiagonal symmetric matrix and $e_1$ denotes the first unit vector, i.e., $e_1 = (1,0,\ldots,0)^\ast \in\mathbb{R}^{n}$. For the tridiagonal case, the action of the matrix exponential is computed using an eigendecomposition of $T$ via the lapack $\texttt{dstevr}$ routine.
 
-The matrix exponentials above have some relevance when applying Lanczos or Arnoldi propagators of Schrödinger-type problems. In this context, $X$ or $T$ correspond to small dimensional Krylov representations of a large problem.
+The matrix exponentials above have some relevance for the Lanczos or Arnoldi approximations to the action of large-dimensional matrix exponentials, e.g., for time-dependent Schrödinger-type problems. In this context, $X$ or $T$ correspond to small dimensional Krylov representations of a large problem.
 
 The main code is written in Fortran, and can be used in Python using f2py.
 
