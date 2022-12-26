@@ -2,13 +2,13 @@
 Fortran routines and a python wrapper to apply the imaginary exponential of a matrix (real tridiagonal or complex). More precisely,
 
 $$
-\beta\mathrm{e}^{\pm\mathrm{i} t X} u
+\beta\mathrm{e}^{\pm\mathrm{i} t X} u \in\mathbb{C}^n,
 $$
 
 for a matrix $X\in\mathbb{C}^{n\times n}$, a time-step $t\in\mathbb{R}$, a scaling factor $\beta\in\mathbb{R}$, a vector $u\in\mathbb{C}^n$ and the imaginary number $\mathrm{i}^2 = -1 $. This matrix exponential is approximated by an adaptive and restarted Taylor approximation. We also consider a tridiagonal case, namely
 
 $$
-\beta\mathrm{e}^{\pm\mathrm{i} t T} e_1
+\beta\mathrm{e}^{\pm\mathrm{i} t T} e_1 \in\mathbb{C}^n,
 $$
 
 for a tridiagonal symmetric matrix $T\in\mathbb{R}^{n\times n}$ and the first unit vector $e_1 = (1,0,\ldots,0)^\ast \in\mathbb{R}^{n}$.  For the tridiagonal case we use a lapack eigendecomposition.
