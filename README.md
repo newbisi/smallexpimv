@@ -13,7 +13,7 @@ $$
 
 for a tridiagonal symmetric matrix $T\in\mathbb{R}^{n\times n}$ and the first unit vector $e_1 = (1,0,\ldots,0)^\ast \in\mathbb{R}^{n}$.  For the tridiagonal case we use a lapack eigendecomposition.
 
-The of matrix exponentials above have some relevance when applying Lanczos or Arnoldi propagators of Schrödinger-type problems. In this context, $X$ or $T$ correspond to small dimensional Krylov representations of a large problem.
+The matrix exponentials above have some relevance when applying Lanczos or Arnoldi propagators of Schrödinger-type problems. In this context, $X$ or $T$ correspond to small dimensional Krylov representations of a large problem.
 
 The main code is written in Fortran, and can be used in Python using f2py.
 
