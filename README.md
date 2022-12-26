@@ -12,7 +12,9 @@ we provide the code smallexpimv_pyclass.py. Keep in mind that using this module 
 
 Makefile: use
 > make test
+
 to run python and fortran tests and
 > make libs
+
 to generate smallexpimv.so and smallexpimv_pyclass.pyc.
 To run the makefile, first define the compiler commands and the f2py filename!
